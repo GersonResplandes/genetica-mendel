@@ -39,6 +39,40 @@ const desiredGenotypeInput = document.getElementById("desired-genotype-input");
 const calculateProbBtn = document.getElementById("calculate-prob-btn");
 const finalProbabilityResult = document.getElementById("final-probability-result");
 
+// Verificar se todos os elementos necessários existem
+const requiredElements = {
+  form,
+  calculateBtn,
+  parent1Input,
+  parent2Input,
+  parent1Feedback,
+  parent2Feedback,
+  errorMessage,
+  resultsSection,
+  simpleCrossResults,
+  punnettSquareContainer,
+  probabilitiesContainer,
+  lawText,
+  polyCrossResults,
+  crossListContainer,
+  polyDetailsContainer,
+  polyDetailsTitle,
+  polyPunnettContainer,
+  polyProbabilitiesContainer,
+  desiredGenotypeInput,
+  calculateProbBtn,
+  finalProbabilityResult
+};
+
+// Verificar elementos faltantes
+const missingElements = Object.entries(requiredElements)
+  .filter(([name, element]) => !element)
+  .map(([name]) => name);
+
+if (missingElements.length > 0) {
+  console.error('❌ Elementos do DOM não encontrados:', missingElements);
+}
+
 // --- Estado da Aplicação ---
 let state = {
   crossType: "mono",
@@ -115,11 +149,18 @@ function handleFormSubmit(event) {
   event.preventDefault();
   if (calculateBtn.disabled) return;
 
+  // Verificar se os elementos necessários existem
+  if (!resultsSection || !polyCrossResults || !simpleCrossResults) {
+    console.error('❌ Elementos de resultado não encontrados');
+    return;
+  }
+
   resultsSection.classList.remove("hidden");
   polyCrossResults.classList.add("hidden");
   simpleCrossResults.classList.add("hidden");
-  finalProbabilityResult.innerHTML = "";
-  desiredGenotypeInput.value = "";
+  
+  if (finalProbabilityResult) finalProbabilityResult.innerHTML = "";
+  if (desiredGenotypeInput) desiredGenotypeInput.value = "";
 
   const p1 = normalizeGenotype(state.parent1.value);
   const p2 = normalizeGenotype(state.parent2.value);
@@ -195,14 +236,26 @@ function handleFinalProbabilityCalculation() {
 
 // --- Inicialização ---
 function init() {
-  // Adicionar event listeners
-  parent1Input.addEventListener("input", handleInputChange);
-  parent2Input.addEventListener("input", handleInputChange);
-  crossTypeRadios.forEach((radio) =>
-    radio.addEventListener("change", handleCrossTypeChange)
-  );
-  form.addEventListener("submit", handleFormSubmit);
-  calculateProbBtn.addEventListener("click", handleFinalProbabilityCalculation);
+  // Verificar se os elementos essenciais existem antes de adicionar event listeners
+  if (!form || !parent1Input || !parent2Input || !calculateBtn) {
+    console.error('❌ Elementos essenciais não encontrados. Verifique se o HTML está correto.');
+    return;
+  }
+
+  // Adicionar event listeners apenas se os elementos existirem
+  if (parent1Input) parent1Input.addEventListener("input", handleInputChange);
+  if (parent2Input) parent2Input.addEventListener("input", handleInputChange);
+  
+  if (crossTypeRadios.length > 0) {
+    crossTypeRadios.forEach((radio) =>
+      radio.addEventListener("change", handleCrossTypeChange)
+    );
+  }
+  
+  if (form) form.addEventListener("submit", handleFormSubmit);
+  if (calculateProbBtn) calculateProbBtn.addEventListener("click", handleFinalProbabilityCalculation);
+  
+  console.log('✅ Event listeners adicionados com sucesso!');
 }
 
 // Inicializar quando o DOM estiver pronto

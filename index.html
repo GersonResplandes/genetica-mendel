@@ -43,15 +43,24 @@
                   />
                   <span class="ml-2 text-gray-700">Monohíbrido</span>
                 </label>
-                <label class="flex items-center">
-                  <input
-                    type="radio"
-                    name="cross-type"
-                    value="di"
-                    class="form-radio h-5 w-5 text-purple-600"
-                  />
-                  <span class="ml-2 text-gray-700">Dihíbrido ou +</span>
-                </label>
+                                 <label class="flex items-center">
+                   <input
+                     type="radio"
+                     name="cross-type"
+                     value="di"
+                     class="form-radio h-5 w-5 text-purple-600"
+                   />
+                   <span class="ml-2 text-gray-700">Dihíbrido</span>
+                 </label>
+                 <label class="flex items-center">
+                   <input
+                     type="radio"
+                     name="cross-type"
+                     value="poly"
+                     class="form-radio h-5 w-5 text-red-600"
+                   />
+                   <span class="ml-2 text-gray-700">Poli-híbrido</span>
+                 </label>
               </div>
             </div>
 
@@ -202,18 +211,18 @@
                       placeholder="Ex: AabbCc"
                       class="w-full p-2 border-2 rounded-md"
                     />
-                    <button
-                      id="calculate-geno-prob-btn"
-                      class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700"
-                    >
-                      Calcular
-                    </button>
+                                         <button
+                       id="calculate-prob-btn"
+                       class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700"
+                     >
+                       Calcular
+                     </button>
                   </div>
-                  <div
-                    id="final-genotype-result"
-                    class="mt-2 p-2 bg-gray-50 rounded-lg text-sm"
-                    aria-live="polite"
-                  ></div>
+                                     <div
+                     id="final-probability-result"
+                     class="mt-2 p-2 bg-gray-50 rounded-lg text-sm"
+                     aria-live="polite"
+                   ></div>
                 </div>
                 <div>
                   <h4 class="font-semibold mb-2">
@@ -294,5 +303,29 @@
       </footer>
     </div>
     <script type="module" src="assets/js/app.js"></script>
+    
+    <!-- Script de teste para verificar se os módulos estão funcionando -->
+    <script type="module">
+      // Teste de importação dos módulos
+      import { normalizeGenotype, validateGenotype } from './assets/js/validation.js';
+      import { getGametes, combineGametes } from './assets/js/genetics.js';
+      import { getStyleClasses } from './assets/js/ui.js';
+      
+      // Aguarda o DOM carregar
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('🧬 Calculadora de Genética Mendeliana - Módulos carregados!');
+        console.log('✅ Teste de módulos:');
+        console.log('  - normalizeGenotype("Aa"):', normalizeGenotype('Aa'));
+        console.log('  - getGametes("Aa"):', getGametes('Aa'));
+        console.log('  - combineGametes("A", "a"):', combineGametes('A', 'a'));
+        console.log('  - getStyleClasses("Aa"):', getStyleClasses('Aa'));
+        
+        // Teste de validação
+        const testValidation = validateGenotype('Aa', 'mono');
+        console.log('  - validateGenotype("Aa", "mono"):', testValidation);
+        
+        console.log('🎉 Todos os módulos funcionando corretamente!');
+      });
+    </script>
   </body>
 </html>

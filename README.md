@@ -7,7 +7,7 @@ Este é um projeto web interativo que implementa uma **Calculadora de Genética 
 ### 🎯 Funcionalidades Principais
 
 - **Cruzamentos Monohíbridos**: Primeira Lei de Mendel (Segregação)
-- **Cruzamentos Dihíbridos**: Segunda Lei de Mendel (Assortimento Independente)  
+- **Cruzamentos Dihíbridos**: Segunda Lei de Mendel (Assortimento Independente)
 - **Cruzamentos Poli-híbridos**: Análise de múltiplos genes simultaneamente
 - **Tabelas de Punnett**: Visualização gráfica dos cruzamentos
 - **Cálculo de Probabilidades**: Resultados percentuais e fracionários
@@ -36,6 +36,7 @@ genetica/
 ## 🏷️ Sugestões de Nomes para Repositório
 
 ### 🎯 Nomes Descritivos
+
 - `calculadora-genetica-mendel`
 - `genetica-mendeliana-calculator`
 - `mendel-genetics-calculator`
@@ -43,6 +44,7 @@ genetica/
 - `mendel-law-calculator`
 
 ### 🧬 Nomes Criativos
+
 - `mendel-genetics-lab`
 - `genetic-cross-simulator`
 - `mendel-punnett-calculator`
@@ -50,6 +52,7 @@ genetica/
 - `mendel-genetics-tool`
 
 ### 🌐 Nomes em Português
+
 - `calculadora-genetica`
 - `genetica-mendeliana`
 - `cruzamentos-geneticos`
@@ -57,6 +60,7 @@ genetica/
 - `genetica-interativa-mendel`
 
 ### 🔬 Nomes Científicos
+
 - `mendelian-genetics-calculator`
 - `genetic-crossing-tool`
 - `punnett-square-generator`
@@ -74,11 +78,13 @@ genetica/
 ## 📊 Exemplos de Uso
 
 ### Monohíbrido
+
 - Progenitor 1: `Aa`
 - Progenitor 2: `aa`
 - Resultado: 50% Aa, 50% aa
 
 ### Dihíbrido
+
 - Progenitor 1: `AaBb`
 - Progenitor 2: `AaBb`
 - Resultado: 9:3:3:1 (proporção mendeliana clássica)

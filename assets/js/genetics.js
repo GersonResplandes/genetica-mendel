@@ -1,4 +1,4 @@
-// --- Lógica Genética ---
+// --- Lógica Genética e Herança ---
 
 /**
  * Gera os gametas possíveis de um genótipo
@@ -6,12 +6,22 @@
  * @returns {Array} Array de gametas possíveis
  */
 export function getGametes(genotype) {
-  if (genotype.length === 2) return [genotype[0], genotype[1]];
-  if (genotype.length === 4) {
-    const g = genotype;
-    return [g[0] + g[2], g[0] + g[3], g[1] + g[2], g[1] + g[3]];
+  const pairs = genotype.match(/.{1,2}/g) || [];
+  if (pairs.length === 0) return [];
+  if (pairs.length === 1) return [...new Set(pairs[0].split(""))];
+
+  let result = [""];
+  for (const pair of pairs) {
+    const newResult = [];
+    const alleles = [...new Set(pair.split(""))];
+    for (const existing of result) {
+      for (const allele of alleles) {
+        newResult.push(existing + allele);
+      }
+    }
+    result = newResult;
   }
-  return [];
+  return result;
 }
 
 /**
@@ -53,64 +63,159 @@ export function calculateProbabilities(offspring) {
 }
 
 /**
- * Calcula a probabilidade final para um genótipo específico em cruzamento poli-híbrido
+ * Determina o fenótipo de um genótipo baseado na herança
+ * @param {string} genotype - Genótipo
+ * @param {object} inheritance - Configuração de herança
+ * @returns {string} Fenótipo
+ */
+export function getPhenotype(genotype, inheritance = {}) {
+  const pairs = genotype.match(/.{1,2}/g) || [];
+  return pairs
+    .map((pair) => {
+      const gene = pair[0].toLowerCase();
+      const inh = inheritance[gene] || {};
+      const type = inh.type || "complete";
+      const isHeterozygous = pair[0] !== pair[1];
+      const isHomozygousDominant =
+        pair[0] === pair[1] && pair[0] === pair[0].toUpperCase();
+
+      if (isHeterozygous) {
+        if (type === "incomplete")
+          return inh.phenotypes?.intermediate || "Intermediário";
+        if (type === "codominance")
+          return inh.phenotypes?.intermediate || "Codominante";
+      }
+      if (
+        isHomozygousDominant ||
+        (isHeterozygous && type === "complete")
+      ) {
+        return inh.phenotypes?.dominant || "Dominante";
+      }
+      return inh.phenotypes?.recessive || "Recessivo";
+    })
+    .join(" / ");
+}
+
+/**
+ * Calcula a probabilidade final para um genótipo específico
  * @param {string} desiredGenotype - Genótipo desejado
  * @param {Array} polyCrossData - Dados dos cruzamentos poli-híbridos
  * @returns {object} Resultado do cálculo de probabilidade
  */
-export function calculateFinalProbability(desiredGenotype, polyCrossData) {
+export function calculateFinalGenotypeProbability(desiredGenotype, polyCrossData) {
   const desiredNormalized = normalizeGenotype(desiredGenotype);
   const desiredPairs = desiredNormalized.match(/.{1,2}/g) || [];
 
   if (desiredPairs.length !== polyCrossData.length) {
     return {
       isValid: false,
-      error: "O genótipo desejado deve ter o mesmo número de genes dos progenitores."
+      error: `Erro: Genótipo deve ter ${polyCrossData.length} genes.`
     };
   }
 
   let finalProbDecimal = 1;
-  let calculationSteps = [];
   let fractionSteps = [];
-  let finalFraction = [1, 1]; // [numerador, denominador]
+  let finalFraction = [1, 1];
 
   for (const pair of desiredPairs) {
     const gene = pair[0].toLowerCase();
     const crossData = polyCrossData.find((c) => c.gene === gene);
+    const prob =
+      crossData && crossData.probabilities[pair]
+        ? crossData.probabilities[pair]
+        : { count: 0, total: 1 };
 
-    if (!crossData || !crossData.probabilities[pair]) {
-      return {
-        isValid: false,
-        error: `Genótipo '${pair}' não é possível neste cruzamento.`
-      };
-    }
-
-    const prob = crossData.probabilities[pair];
-    const decimalValue = prob.count / prob.total;
-    finalProbDecimal *= decimalValue;
-
+    finalProbDecimal *= prob.count / prob.total;
     finalFraction[0] *= prob.count;
     finalFraction[1] *= prob.total;
-
-    calculationSteps.push(`P(${pair})`);
     fractionSteps.push(`${prob.count}/${prob.total}`);
   }
 
-  // Simplificar a fração final
-  function gcd(a, b) {
-    return b === 0 ? a : gcd(b, a % b);
-  }
-  const commonDivisor = gcd(finalFraction[0], finalFraction[1]);
-  const simplifiedFraction = `${finalFraction[0] / commonDivisor}/${finalFraction[1] / commonDivisor}`;
-
+  const simplifiedFraction = simplifyFraction(finalFraction[0], finalFraction[1]);
+  
   return {
     isValid: true,
     desiredGenotype: desiredNormalized,
-    calculationSteps,
     fractionSteps,
     simplifiedFraction,
-    percentage: (finalProbDecimal * 100).toFixed(4)
+    percentage: (finalProbDecimal * 100).toFixed(2)
   };
+}
+
+/**
+ * Calcula a probabilidade final para um fenótipo específico
+ * @param {Array} phenotypeSelections - Seleções de fenótipos
+ * @param {Array} polyCrossData - Dados dos cruzamentos
+ * @param {object} inheritance - Configuração de herança
+ * @returns {object} Resultado do cálculo
+ */
+export function calculateFinalPhenotypeProbability(phenotypeSelections, polyCrossData, inheritance) {
+  let finalProbDecimal = 1;
+  let fractionSteps = [];
+  let finalFraction = [1, 1];
+
+  polyCrossData.forEach((cross, index) => {
+    const desiredPheno = phenotypeSelections[index];
+    const type = inheritance[cross.gene]?.type || "complete";
+
+    let phenoCount = 0;
+    const total = Object.values(cross.probabilities)[0].total;
+
+    for (const genotype in cross.probabilities) {
+      const isHeterozygous = genotype[0] !== genotype[1];
+      const isHomozygousDominant =
+        genotype[0] === genotype[1] &&
+        genotype[0].toUpperCase() === genotype[0];
+
+      let matches = false;
+      if (
+        desiredPheno === "dominant" &&
+        (isHomozygousDominant || (type === "complete" && isHeterozygous))
+      )
+        matches = true;
+      if (
+        desiredPheno === "recessive" &&
+        !isHomozygousDominant &&
+        !isHeterozygous
+      )
+        matches = true;
+      if (desiredPheno === "intermediate" && isHeterozygous)
+        matches = true;
+
+      if (matches) phenoCount += cross.probabilities[genotype].count;
+    }
+
+    finalProbDecimal *= phenoCount / total;
+    finalFraction[0] *= phenoCount;
+    finalFraction[1] *= total;
+    fractionSteps.push(`${phenoCount}/${total}`);
+  });
+
+  const simplifiedFraction = simplifyFraction(finalFraction[0], finalFraction[1]);
+  
+  return {
+    isValid: true,
+    fractionSteps,
+    simplifiedFraction,
+    percentage: (finalProbDecimal * 100).toFixed(2)
+  };
+}
+
+/**
+ * Simplifica uma fração
+ * @param {number} numerator - Numerador
+ * @param {number} denominator - Denominador
+ * @returns {string} Fração simplificada
+ */
+export function simplifyFraction(numerator, denominator) {
+  if (denominator === 0) return "Indefinido";
+  
+  function gcd(a, b) {
+    return b === 0 ? a : gcd(b, a % b);
+  }
+  
+  const commonDivisor = gcd(numerator, denominator);
+  return `${numerator / commonDivisor}/${denominator / commonDivisor}`;
 }
 
 // Importação da função de normalização

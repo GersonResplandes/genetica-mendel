@@ -1,57 +1,75 @@
+/* --- Estilos da Calculadora de Genética Mendeliana --- */
+
 body {
   font-family: "Inter", sans-serif;
   background-color: #f8f9fa;
   color: #212529;
 }
+
+/* --- Bordas para diferentes tipos de genótipos --- */
 .border-dominant {
   border: 2px solid #228b22;
 }
+
 .border-recessive {
   border: 2px dashed #ffd700;
 }
+
 .border-heterozygous {
   border: 2px dotted #9370db;
 }
+
 .border-codominant {
   border: 2px solid #4682b4;
 }
+
 .border-incomplete {
   border: 2px dashed #ff69b4;
 }
 
+/* --- Backgrounds para diferentes tipos de genótipos --- */
 .bg-dominant {
   background-color: #228b22;
   color: white;
 }
+
 .bg-recessive {
   background-color: #ffd700;
   color: #333;
 }
+
 .bg-heterozygous {
   background-color: #9370db;
   color: white;
 }
+
 .bg-codominant {
   background-color: #4682b4;
   color: white;
 }
+
 .bg-incomplete {
   background-color: #ff69b4;
   color: white;
 }
 
+/* --- Validação de entrada --- */
 .input-valid {
   border-color: #228b22;
 }
+
 .input-invalid {
   border-color: #dc2626;
 }
+
 .feedback-icon {
   position: absolute;
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
 }
+
+/* --- Tooltips --- */
 [data-tooltip]:hover::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -66,14 +84,43 @@ body {
   white-space: nowrap;
   z-index: 10;
 }
+
+/* --- Lista de cruzamentos --- */
 .cross-list-item {
   cursor: pointer;
   transition: background-color 0.2s;
 }
+
 .cross-list-item.active {
   background-color: #e0e7ff; /* indigo-100 */
   font-weight: bold;
 }
+
+/* --- Elementos interativos --- */
 details > summary {
   cursor: pointer;
+}
+
+/* --- Animações e transições --- */
+.transition-colors {
+  transition: all 0.3s ease;
+}
+
+.hover\:bg-gray-200:hover {
+  background-color: #e5e7eb;
+}
+
+/* --- Responsividade adicional --- */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.875rem;
+  }
+  
+  .text-4xl {
+    font-size: 2.25rem;
+  }
 }

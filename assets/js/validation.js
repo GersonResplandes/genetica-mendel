@@ -1,4 +1,4 @@
-// --- Validação de Genótipos ---
+// --- Validação de Genótipos e Herança ---
 
 /**
  * Normaliza um genótipo para formato padrão
@@ -7,31 +7,41 @@
  */
 export function normalizeGenotype(genotype) {
   const cleaned = genotype.trim().replace(/\s+/g, "");
-  const pairs = cleaned.match(/.{1,2}/g) || [];
-  const sortedPairs = pairs.map((pair) => {
-    const alleles = pair.split("");
-    alleles.sort(
-      (a, b) =>
-        a.toLowerCase().localeCompare(b.toLowerCase()) || a.localeCompare(b)
-    );
-    return alleles.join("");
-  });
-  sortedPairs.sort((a, b) =>
-    a[0].toLowerCase().localeCompare(b[0].toLowerCase())
-  );
-  return sortedPairs.join("");
+  const genes = {};
+  
+  for (let i = 0; i < cleaned.length; i++) {
+    const allele = cleaned[i];
+    const geneName = allele.toLowerCase();
+    if (!genes[geneName]) genes[geneName] = [];
+    genes[geneName].push(allele);
+  }
+  
+  return Object.keys(genes)
+    .sort()
+    .map((geneName) => genes[geneName].sort().join(""))
+    .join("");
+}
+
+/**
+ * Extrai os genes de um genótipo
+ * @param {string} genotype - Genótipo normalizado
+ * @returns {Array} Array de genes (letras minúsculas)
+ */
+export function extractGenes(genotype) {
+  const pairs = genotype.match(/.{1,2}/g) || [];
+  return pairs.map(pair => pair[0].toLowerCase());
 }
 
 /**
  * Valida um genótipo baseado no tipo de cruzamento
  * @param {string} genotype - Genótipo a ser validado
- * @param {string} type - Tipo de cruzamento (mono, di, poly)
+ * @param {string} type - Tipo de cruzamento (mono, di)
  * @returns {object} Resultado da validação
  */
 export function validateGenotype(genotype, type) {
   const cleaned = genotype.trim();
   if (cleaned.length === 0) return { isValid: true, message: "" };
-
+  
   const canonical = normalizeGenotype(cleaned);
 
   if (type === "mono") {
@@ -41,48 +51,31 @@ export function validateGenotype(genotype, type) {
     ) {
       return {
         isValid: false,
-        message:
-          "Genótipo monohíbrido inválido. Use um par de alelos (Ex: AA, Aa).",
+        message: "Use um par de alelos (Ex: AA, Aa).",
       };
     }
   } else if (type === "di") {
-    if (
-      !/^[A-Za-z]{4}$/.test(cleaned) ||
-      cleaned
-        .match(/.{1,2}/g)
-        .some((p) => p[0].toLowerCase() !== p[1].toLowerCase())
-    ) {
-      return {
-        isValid: false,
-        message:
-          "Genótipo dihíbrido inválido. Use dois pares de alelos (Ex: AaBb).",
-      };
-    }
-    const genes = new Set(
-      canonical
-        .toLowerCase()
-        .split("")
-        .filter((_, i) => i % 2 === 0)
-    );
-    if (genes.size !== 2)
-      return {
-        isValid: false,
-        message: "Deve conter exatamente 2 genes diferentes.",
-      };
-  } else if (type === "poly") {
     if (cleaned.length % 2 !== 0) {
       return {
         isValid: false,
-        message: "Genótipo deve ter um número par de alelos.",
+        message: "Deve ter um número par de alelos.",
       };
     }
+    
     const pairs = canonical.match(/.{1,2}/g) || [];
+    if (!pairs || pairs.length < 2) {
+      return {
+        isValid: false,
+        message: "Requer pelo menos 2 genes (Ex: AaBb).",
+      };
+    }
+    
     const genes = new Set();
     for (const pair of pairs) {
       if (pair[0].toLowerCase() !== pair[1].toLowerCase()) {
         return {
           isValid: false,
-          message: `Alelos '${pair}' não formam um par para o mesmo gene.`,
+          message: `Alelos '${pair}' não formam um par.`,
         };
       }
       if (genes.has(pair[0].toLowerCase())) {
@@ -94,45 +87,56 @@ export function validateGenotype(genotype, type) {
       genes.add(pair[0].toLowerCase());
     }
   }
+  
   return { isValid: true, message: "" };
 }
 
 /**
  * Valida se ambos os progenitores são compatíveis
- * @param {string} parent1 - Genótipo do progenitor 1
- * @param {string} parent2 - Genótipo do progenitor 2
+ * @param {object} parent1 - Dados do progenitor 1
+ * @param {object} parent2 - Dados do progenitor 2
  * @returns {object} Resultado da validação
  */
 export function validateBothParents(parent1, parent2) {
-  const p1Value = parent1.trim();
-  const p2Value = parent2.trim();
+  if (
+    !parent1.isValid ||
+    !parent2.isValid ||
+    !parent1.value ||
+    !parent2.value
+  ) {
+    return { isValid: true };
+  }
   
-  if (!p1Value || !p2Value) return { isValid: true };
-
-  const p1Genes = new Set(
-    (normalizeGenotype(p1Value).match(/.{1,2}/g) || []).map((p) =>
-      p[0].toLowerCase()
-    )
-  );
-  const p2Genes = new Set(
-    (normalizeGenotype(p2Value).match(/.{1,2}/g) || []).map((p) =>
-      p[0].toLowerCase()
-    )
-  );
-
-  if (p1Genes.size !== p2Genes.size) {
+  if (parent1.genes.length !== parent2.genes.length) {
     return {
       isValid: false,
       message: "Progenitores devem ter o mesmo número de genes.",
     };
   }
-  for (const gene of p1Genes) {
-    if (!p2Genes.has(gene)) {
+  
+  for (const gene of parent1.genes) {
+    if (!parent2.genes.includes(gene)) {
       return {
         isValid: false,
-        message: `Ambos progenitores devem ter o gene '${gene.toUpperCase()}'.`,
+        message: `Ambos devem ter o gene '${gene.toUpperCase()}'.`,
       };
     }
   }
+  
   return { isValid: true };
+}
+
+/**
+ * Cria dados de validação para um progenitor
+ * @param {string} value - Valor do genótipo
+ * @param {boolean} isValid - Se é válido
+ * @param {Array} genes - Genes extraídos
+ * @returns {object} Dados do progenitor
+ */
+export function createParentData(value, isValid, genes = []) {
+  return {
+    value,
+    isValid,
+    genes: isValid && value ? extractGenes(normalizeGenotype(value)) : genes
+  };
 }

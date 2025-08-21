@@ -17,10 +17,11 @@ Este é um projeto web interativo que implementa uma **Calculadora de Genética 
 ### 🛠️ Tecnologias Utilizadas
 
 - **HTML5**: Estrutura semântica
-- **CSS3**: Estilização com Tailwind CSS + customizações
-- **JavaScript Vanilla**: Lógica de cálculo genético
+- **CSS3**: Styling com Tailwind CSS + customizações
+- **JavaScript ES6+**: Lógica modular com imports/exports
 - **Fontes**: Inter (Google Fonts)
 - **Design**: Interface moderna e responsiva
+- **Arquitetura**: Módulos JavaScript para melhor organização
 
 ### 📁 Estrutura do Projeto
 
@@ -28,7 +29,11 @@ Este é um projeto web interativo que implementa uma **Calculadora de Genética 
 genetica/
 ├── index.html          # Página principal
 ├── assets/
-│   ├── script.js       # Lógica JavaScript
+│   ├── js/
+│   │   ├── app.js      # Aplicação principal (orquestrador)
+│   │   ├── validation.js # Validação de genótipos
+│   │   ├── genetics.js # Lógica genética e cálculos
+│   │   └── ui.js       # Interface do usuário
 │   └── style.css       # Estilos customizados
 └── README.md           # Documentação
 ```

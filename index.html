@@ -20,15 +20,15 @@
           🧬 Calculadora de Genética Mendeliana
         </h1>
         <p class="text-gray-600 mt-2">
-          Uma ferramenta interativa para Primeira, Segunda e Terceira Leis de
-          Mendel.
+          Uma ferramenta interativa para a Primeira e Segunda Leis de Mendel e
+          suas variações.
         </p>
       </header>
 
       <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-1 bg-white p-6 rounded-lg shadow-md">
           <form id="genetics-form">
-            <div class="mb-6">
+            <div class="mb-4">
               <label class="block text-lg font-semibold mb-2 text-gray-700"
                 >1. Tipo de Cruzamento</label
               >
@@ -50,32 +50,32 @@
                     value="di"
                     class="form-radio h-5 w-5 text-purple-600"
                   />
-                  <span class="ml-2 text-gray-700">Dihíbrido</span>
-                </label>
-                <label class="flex items-center">
-                  <input
-                    type="radio"
-                    name="cross-type"
-                    value="poly"
-                    class="form-radio h-5 w-5 text-red-600"
-                  />
-                  <span class="ml-2 text-gray-700">Poli-híbrido</span>
+                  <span class="ml-2 text-gray-700">Dihíbrido ou +</span>
                 </label>
               </div>
             </div>
 
-            <div class="mb-6">
+            <div class="mb-4">
               <label
                 for="parent1"
                 class="block text-lg font-semibold mb-2 text-gray-700"
                 >2. Genótipos dos Progenitores</label
               >
+              <div class="flex items-center gap-2 mb-2">
+                <button
+                  type="button"
+                  id="example-btn"
+                  class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 py-1 px-2 rounded-md"
+                >
+                  Exemplo Clássico
+                </button>
+              </div>
               <div class="relative mb-4">
                 <input
                   type="text"
                   id="parent1"
                   placeholder="Ex: Aa"
-                  class="w-full p-3 border-2 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  class="w-full p-3 border-2 rounded-md transition-colors duration-300"
                   required
                 />
                 <div id="parent1-feedback" class="feedback-icon"></div>
@@ -85,11 +85,18 @@
                   type="text"
                   id="parent2"
                   placeholder="Ex: aa"
-                  class="w-full p-3 border-2 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  class="w-full p-3 border-2 rounded-md transition-colors duration-300"
                   required
                 />
                 <div id="parent2-feedback" class="feedback-icon"></div>
               </div>
+            </div>
+
+            <div id="inheritance-section" class="mb-4">
+              <label class="block text-lg font-semibold mb-2 text-gray-700"
+                >3. Tipos de Herança e Fenótipos</label
+              >
+              <div id="inheritance-selectors-container" class="space-y-4"></div>
             </div>
 
             <div
@@ -101,7 +108,7 @@
             <button
               id="calculate-btn"
               type="submit"
-              class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-md hover:bg-blue-700 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-md hover:bg-blue-700 transition-colors duration-300 disabled:bg-gray-400"
               disabled
             >
               Calcular Cruzamento
@@ -143,6 +150,14 @@
             <h2 class="text-2xl font-bold text-gray-800 mb-4">
               Análise de Cruzamento Poli-híbrido
             </h2>
+            <div
+              class="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg"
+            >
+              <h3 class="font-bold text-blue-800">Lei de Mendel Aplicável</h3>
+              <p class="text-blue-700">
+                Segunda Lei de Mendel (Segregação Independente dos Genes)
+              </p>
+            </div>
             <p class="mb-4 text-gray-600">
               O cruzamento complexo foi dividido em cruzamentos monohíbridos.
               Clique em cada um para ver a análise detalhada.
@@ -170,38 +185,114 @@
                 </div>
               </div>
             </div>
-            <!-- Nova Seção de Probabilidade Final -->
             <div
               id="final-probability-section"
               class="mt-8 pt-6 border-t-2 border-gray-200"
             >
-              <h3 class="text-xl font-semibold mb-4">
-                Probabilidade de um Genótipo Específico
-              </h3>
-              <div class="flex flex-col sm:flex-row items-center gap-4">
-                <input
-                  type="text"
-                  id="desired-genotype-input"
-                  placeholder="Digite o genótipo desejado (ex: AabbCc)"
-                  class="w-full sm:w-1/2 p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <button
-                  id="calculate-prob-btn"
-                  class="w-full sm:w-auto bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors"
-                >
-                  Calcular Probabilidade
-                </button>
+              <h3 class="text-xl font-semibold mb-4">Probabilidade Final</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 class="font-semibold mb-2">
+                    Probabilidade de um Genótipo
+                  </h4>
+                  <div class="flex items-center gap-2">
+                    <input
+                      type="text"
+                      id="desired-genotype-input"
+                      placeholder="Ex: AabbCc"
+                      class="w-full p-2 border-2 rounded-md"
+                    />
+                    <button
+                      id="calculate-geno-prob-btn"
+                      class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700"
+                    >
+                      Calcular
+                    </button>
+                  </div>
+                  <div
+                    id="final-genotype-result"
+                    class="mt-2 p-2 bg-gray-50 rounded-lg text-sm"
+                    aria-live="polite"
+                  ></div>
+                </div>
+                <div>
+                  <h4 class="font-semibold mb-2">
+                    Probabilidade de um Fenótipo
+                  </h4>
+                  <div id="phenotype-selectors" class="space-y-2"></div>
+                  <button
+                    id="calculate-pheno-prob-btn"
+                    class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 mt-2"
+                  >
+                    Calcular
+                  </button>
+                  <div
+                    id="final-phenotype-result"
+                    class="mt-2 p-2 bg-gray-50 rounded-lg text-sm"
+                    aria-live="polite"
+                  ></div>
+                </div>
               </div>
-              <div
-                id="final-probability-result"
-                class="mt-4 p-4 bg-gray-50 rounded-lg text-gray-700"
-                aria-live="polite"
-              ></div>
             </div>
           </div>
         </div>
       </main>
+
+      <footer class="mt-10 bg-white p-6 rounded-lg shadow-md">
+        <details>
+          <summary class="text-xl font-bold text-gray-800">
+            Saiba Mais: Contexto e Conceitos Avançados
+          </summary>
+          <div
+            class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600"
+          >
+            <div>
+              <h4 class="font-semibold text-gray-900 mb-2">
+                Contexto Histórico
+              </h4>
+              <p>
+                Gregor Mendel (1822-1884), através de seus experimentos com
+                ervilhas, estabeleceu as leis da segregação e da segregação
+                independente. Seu trabalho é a base da genética clássica, embora
+                hoje saibamos que existem muitas exceções e complexidades que
+                ele não observou.
+              </p>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-900 mb-2">
+                Exceções à 2ª Lei de Mendel
+              </h4>
+              <p>
+                Esta calculadora assume que os genes estão em cromossomos
+                diferentes (segregação independente). Na realidade, genes no
+                mesmo cromossomo tendem a ser herdados juntos, um fenômeno
+                chamado <strong>Ligação Gênica (Linkage)</strong>. A troca de
+                pedaços entre cromossomos (crossing-over) pode quebrar essa
+                ligação. Outras interações como a <strong>Epistasia</strong> (um
+                gene interfere na expressão de outro) também alteram as
+                proporções esperadas.
+              </p>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-900 mb-2">
+                Tipos de Dominância
+              </h4>
+              <p>
+                <strong>Completa:</strong> O fenótipo do heterozigoto (Aa) é
+                igual ao do homozigoto dominante (AA).<br /><strong
+                  >Incompleta:</strong
+                >
+                O heterozigoto apresenta um fenótipo intermediário (ex: flor
+                vermelha + branca = rosa).<br /><strong>Codominância:</strong>
+                Ambos os alelos se expressam plenamente no heterozigoto (ex:
+                tipo sanguíneo AB, onde ambos os antígenos A e B estão
+                presentes).
+              </p>
+            </div>
+          </div>
+        </details>
+      </footer>
     </div>
-    <script src="assets/script.js"></script>
+    <script type="module" src="assets/js/app.js"></script>
   </body>
 </html>

@@ -12,6 +12,12 @@ body {
 .border-heterozygous {
   border: 2px dotted #9370db;
 }
+.border-codominant {
+  border: 2px solid #4682b4;
+}
+.border-incomplete {
+  border: 2px dashed #ff69b4;
+}
 
 .bg-dominant {
   background-color: #228b22;
@@ -23,6 +29,14 @@ body {
 }
 .bg-heterozygous {
   background-color: #9370db;
+  color: white;
+}
+.bg-codominant {
+  background-color: #4682b4;
+  color: white;
+}
+.bg-incomplete {
+  background-color: #ff69b4;
   color: white;
 }
 
@@ -59,4 +73,7 @@ body {
 .cross-list-item.active {
   background-color: #e0e7ff; /* indigo-100 */
   font-weight: bold;
+}
+details > summary {
+  cursor: pointer;
 }

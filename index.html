@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Genética Mendeliana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+      <header class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800">
+          🧬 Calculadora de Genética Mendeliana
+        </h1>
+        <p class="text-gray-600 mt-2">
+          Uma ferramenta interativa para Primeira, Segunda e Terceira Leis de
+          Mendel.
+        </p>
+      </header>
+
+      <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-1 bg-white p-6 rounded-lg shadow-md">
+          <form id="genetics-form">
+            <div class="mb-6">
+              <label class="block text-lg font-semibold mb-2 text-gray-700"
+                >1. Tipo de Cruzamento</label
+              >
+              <div class="flex flex-wrap gap-x-4 gap-y-2">
+                <label class="flex items-center">
+                  <input
+                    type="radio"
+                    name="cross-type"
+                    value="mono"
+                    class="form-radio h-5 w-5 text-green-600"
+                    checked
+                  />
+                  <span class="ml-2 text-gray-700">Monohíbrido</span>
+                </label>
+                <label class="flex items-center">
+                  <input
+                    type="radio"
+                    name="cross-type"
+                    value="di"
+                    class="form-radio h-5 w-5 text-purple-600"
+                  />
+                  <span class="ml-2 text-gray-700">Dihíbrido</span>
+                </label>
+                <label class="flex items-center">
+                  <input
+                    type="radio"
+                    name="cross-type"
+                    value="poly"
+                    class="form-radio h-5 w-5 text-red-600"
+                  />
+                  <span class="ml-2 text-gray-700">Poli-híbrido</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="mb-6">
+              <label
+                for="parent1"
+                class="block text-lg font-semibold mb-2 text-gray-700"
+                >2. Genótipos dos Progenitores</label
+              >
+              <div class="relative mb-4">
+                <input
+                  type="text"
+                  id="parent1"
+                  placeholder="Ex: Aa"
+                  class="w-full p-3 border-2 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+                <div id="parent1-feedback" class="feedback-icon"></div>
+              </div>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="parent2"
+                  placeholder="Ex: aa"
+                  class="w-full p-3 border-2 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+                <div id="parent2-feedback" class="feedback-icon"></div>
+              </div>
+            </div>
+
+            <div
+              id="error-message"
+              class="text-red-600 text-sm mb-4 h-10"
+              aria-live="polite"
+            ></div>
+
+            <button
+              id="calculate-btn"
+              type="submit"
+              class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-md hover:bg-blue-700 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              disabled
+            >
+              Calcular Cruzamento
+            </button>
+          </form>
+        </div>
+
+        <!-- Coluna de Resultados -->
+        <div
+          id="results-section"
+          class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md hidden"
+        >
+          <!-- Resultados para Mono/Di-híbrido -->
+          <div id="simple-cross-results">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+              Resultados do Cruzamento
+            </h2>
+            <div
+              id="law-info"
+              class="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg"
+            >
+              <h3 class="font-bold text-blue-800">Lei de Mendel Aplicável</h3>
+              <p id="law-text" class="text-blue-700"></p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-xl font-semibold mb-2">Tabela de Punnett</h3>
+                <div id="punnett-square" class="overflow-x-auto"></div>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold mb-2">Probabilidades</h3>
+                <div id="probabilities" class="space-y-4"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resultados para Poli-híbrido -->
+          <div id="poly-cross-results" class="hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+              Análise de Cruzamento Poli-híbrido
+            </h2>
+            <p class="mb-4 text-gray-600">
+              O cruzamento complexo foi dividido em cruzamentos monohíbridos.
+              Clique em cada um para ver a análise detalhada.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="md:col-span-1">
+                <h3 class="text-xl font-semibold mb-2">Cruzamentos por Gene</h3>
+                <ul id="cross-list" class="space-y-2"></ul>
+              </div>
+              <div id="poly-details" class="md:col-span-2 hidden">
+                <h3 id="poly-details-title" class="text-xl font-semibold mb-2">
+                  Detalhes do Cruzamento
+                </h3>
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                  <div>
+                    <h4 class="font-semibold text-gray-700">
+                      Tabela de Punnett
+                    </h4>
+                    <div id="poly-punnett-square" class="mt-2"></div>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-gray-700">Probabilidades</h4>
+                    <div id="poly-probabilities" class="mt-2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Nova Seção de Probabilidade Final -->
+            <div
+              id="final-probability-section"
+              class="mt-8 pt-6 border-t-2 border-gray-200"
+            >
+              <h3 class="text-xl font-semibold mb-4">
+                Probabilidade de um Genótipo Específico
+              </h3>
+              <div class="flex flex-col sm:flex-row items-center gap-4">
+                <input
+                  type="text"
+                  id="desired-genotype-input"
+                  placeholder="Digite o genótipo desejado (ex: AabbCc)"
+                  class="w-full sm:w-1/2 p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button
+                  id="calculate-prob-btn"
+                  class="w-full sm:w-auto bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors"
+                >
+                  Calcular Probabilidade
+                </button>
+              </div>
+              <div
+                id="final-probability-result"
+                class="mt-4 p-4 bg-gray-50 rounded-lg text-gray-700"
+                aria-live="polite"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="assets/script.js"></script>
+  </body>
+</html>

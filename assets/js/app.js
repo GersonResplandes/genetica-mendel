@@ -1,29 +1,31 @@
 // --- Aplicação Principal da Calculadora de Genética Mendeliana ---
 
 // Importações dos módulos
-import { 
-  validateGenotype, 
-  validateBothParents, 
+import {
+  validateGenotype,
+  validateBothParents,
   createParentData,
-  normalizeGenotype 
-} from './validation.js';
+  normalizeGenotype,
+} from "./validation.js";
 
-import { 
-  getGametes, 
-  combineGametes, 
+import {
+  getGametes,
+  combineGametes,
+  calculateProbabilities,
   calculateFinalGenotypeProbability,
-  calculateFinalPhenotypeProbability
-} from './genetics.js';
+  calculateFinalPhenotypeProbability,
+} from "./genetics.js";
 
-import { 
-  updateInputFeedback, 
-  renderPunnettSquare, 
-  renderProbabilities, 
+import {
+  updateInputFeedback,
+  renderPunnettSquare,
+  renderProbabilities,
   renderInheritanceSelectors,
   renderPolyCrossList,
   renderPhenotypeSelectors,
-  renderFinalProbabilityResult
-} from './ui.js';
+  renderFinalProbabilityResult,
+  renderCommonPhenotypeProbabilities,
+} from "./ui.js";
 
 // --- Elementos do DOM ---
 const form = document.getElementById("genetics-form");
@@ -35,7 +37,9 @@ const parent2Feedback = document.getElementById("parent2-feedback");
 const errorMessage = document.getElementById("error-message");
 const resultsSection = document.getElementById("results-section");
 const crossTypeRadios = document.querySelectorAll('input[name="cross-type"]');
-const inheritanceSelectorsContainer = document.getElementById("inheritance-selectors-container");
+const inheritanceSelectorsContainer = document.getElementById(
+  "inheritance-selectors-container"
+);
 const exampleBtn = document.getElementById("example-btn");
 
 const simpleCrossResults = document.getElementById("simple-cross-results");
@@ -48,14 +52,9 @@ const crossListContainer = document.getElementById("cross-list");
 const polyDetailsContainer = document.getElementById("poly-details");
 const polyDetailsTitle = document.getElementById("poly-details-title");
 const polyPunnettContainer = document.getElementById("poly-punnett-square");
-const polyProbabilitiesContainer = document.getElementById("poly-probabilities");
+const polyProbabilitiesContainer =
+  document.getElementById("poly-probabilities");
 
-const desiredGenotypeInput = document.getElementById("desired-genotype-input");
-const calculateGenoProbBtn = document.getElementById("calculate-geno-prob-btn");
-const finalGenotypeResult = document.getElementById("final-genotype-result");
-
-const phenotypeSelectorsContainer = document.getElementById("phenotype-selectors");
-const calculatePhenoProbBtn = document.getElementById("calculate-pheno-prob-btn");
 const finalPhenotypeResult = document.getElementById("final-phenotype-result");
 
 // --- Estado da Aplicação ---
@@ -76,14 +75,17 @@ let currentPolyCrossData = [];
 function handleInputChange() {
   const p1Value = parent1Input.value;
   const p2Value = parent2Input.value;
-  
+
   const p1Validation = validateGenotype(p1Value, state.crossType);
   const p2Validation = validateGenotype(p2Value, state.crossType);
 
   state.parent1 = createParentData(p1Value, p1Validation.isValid);
   state.parent2 = createParentData(p2Value, p2Validation.isValid);
 
-  const bothParentsValidation = validateBothParents(state.parent1, state.parent2);
+  const bothParentsValidation = validateBothParents(
+    state.parent1,
+    state.parent2
+  );
 
   updateInputFeedback(
     parent1Input,
@@ -105,7 +107,7 @@ function handleInputChange() {
     finalError = `Progenitor 2: ${p2Validation.message}`;
   else if (!bothParentsValidation.isValid)
     finalError = bothParentsValidation.message;
-  
+
   errorMessage.textContent = finalError;
 
   calculateBtn.disabled = !(
@@ -128,20 +130,22 @@ function handleInputChange() {
  * Atualiza o estado de herança baseado nos seletores
  */
 function updateInheritanceState() {
-  document.querySelectorAll("#inheritance-selectors-container .gene-settings").forEach((container) => {
-    const gene = container.dataset.gene;
-    const typeSelector = container.querySelector("select");
-    const phenotypeInputs = container.querySelectorAll("input");
-    
-    state.inheritance[gene] = {
-      type: typeSelector.value,
-      phenotypes: {
-        dominant: phenotypeInputs[0].value,
-        intermediate: phenotypeInputs[1].value,
-        recessive: phenotypeInputs[2].value,
-      },
-    };
-  });
+  document
+    .querySelectorAll("#inheritance-selectors-container .gene-settings")
+    .forEach((container) => {
+      const gene = container.dataset.gene;
+      const typeSelector = container.querySelector("select");
+      const phenotypeInputs = container.querySelectorAll("input");
+
+      state.inheritance[gene] = {
+        type: typeSelector.value,
+        phenotypes: {
+          dominant: phenotypeInputs[0].value,
+          intermediate: phenotypeInputs[1].value,
+          recessive: phenotypeInputs[2].value,
+        },
+      };
+    });
 }
 
 /**
@@ -149,16 +153,16 @@ function updateInheritanceState() {
  */
 function handleCrossTypeChange(event) {
   state.crossType = event.target.value;
-  const placeholders = { 
-    mono: "Ex: Aa", 
-    di: "Ex: AaBb ou AaBbCc" 
+  const placeholders = {
+    mono: "Ex: Aa",
+    di: "Ex: AaBb ou AaBbCc",
   };
-  
+
   parent1Input.placeholder = placeholders[state.crossType];
   parent2Input.placeholder = placeholders[state.crossType];
   parent1Input.value = "";
   parent2Input.value = "";
-  
+
   handleInputChange();
   resultsSection.classList.add("hidden");
 }
@@ -175,28 +179,33 @@ function handleFormSubmit(event) {
   resultsSection.classList.remove("hidden");
   polyCrossResults.classList.add("hidden");
   simpleCrossResults.classList.add("hidden");
-  finalGenotypeResult.innerHTML = "";
-  finalPhenotypeResult.innerHTML = "";
-  desiredGenotypeInput.value = "";
+  // Não limpar o resultado anterior para permitir comparações
 
   const p1 = normalizeGenotype(state.parent1.value);
   const p2 = normalizeGenotype(state.parent2.value);
   const p1Pairs = p1.match(/.{1,2}/g) || [];
 
-  if (state.crossType === "mono" || (state.crossType === "di" && p1Pairs.length === 2)) {
+  if (
+    state.crossType === "mono" ||
+    (state.crossType === "di" && p1Pairs.length === 2)
+  ) {
     // Cruzamento simples (mono ou di)
     simpleCrossResults.classList.remove("hidden");
-    lawText.textContent = p1Pairs.length === 1
-      ? "Primeira Lei de Mendel"
-      : "Segunda Lei de Mendel";
-    
+    lawText.textContent =
+      p1Pairs.length === 1 ? "Primeira Lei de Mendel" : "Segunda Lei de Mendel";
+
     const gametes1 = getGametes(p1);
     const gametes2 = getGametes(p2);
     const offspring = gametes1.flatMap((g1) =>
       gametes2.map((g2) => combineGametes(g1, g2))
     );
-    
-    renderPunnettSquare(gametes1, gametes2, punnettSquareContainer, state.inheritance);
+
+    renderPunnettSquare(
+      gametes1,
+      gametes2,
+      punnettSquareContainer,
+      state.inheritance
+    );
     renderProbabilities(offspring, probabilitiesContainer, state.inheritance);
   } else {
     // Cruzamento poli-híbrido
@@ -211,7 +220,7 @@ function handleFormSubmit(event) {
       const offspring = gametes1.flatMap((g1) =>
         gametes2.map((g2) => combineGametes(g1, g2))
       );
-      
+
       const { genotypeCounts } = calculateProbabilities(offspring);
       const probabilities = {};
       for (const genotype in genotypeCounts) {
@@ -220,7 +229,7 @@ function handleFormSubmit(event) {
           total: offspring.length,
         };
       }
-      
+
       return {
         p1: p1Pair,
         p2: p2Pair,
@@ -232,11 +241,55 @@ function handleFormSubmit(event) {
     renderPolyCrossList(currentPolyCrossData, crossListContainer, (cross) => {
       renderPolyDetail(cross);
     });
-    
-    renderPhenotypeSelectors(currentPolyCrossData, state.inheritance, phenotypeSelectorsContainer);
+
+    // Renderizar probabilidades automáticas
+    renderCommonPhenotypeProbabilities(
+      currentPolyCrossData,
+      state.inheritance,
+      document.getElementById("final-phenotype-result")
+    );
+
+    // Adicionar event listeners para cálculos personalizados
+    addCustomCalculationListeners();
   }
-  
+
   resultsSection.scrollIntoView({ behavior: "smooth" });
+}
+
+/**
+ * Adiciona event listeners para cálculos personalizados
+ */
+function addCustomCalculationListeners() {
+  // Event listener para cálculo de fenótipo específico
+  const calculatePhenoBtn = document.getElementById("calculate-pheno-prob-btn");
+  if (calculatePhenoBtn) {
+    calculatePhenoBtn.addEventListener(
+      "click",
+      handleCustomPhenotypeCalculation
+    );
+  }
+}
+
+/**
+ * Manipula o cálculo de fenótipo específico
+ */
+function handleCustomPhenotypeCalculation() {
+  const resultContainer = document.getElementById("phenotype-result-area");
+  if (!resultContainer) return;
+
+  const phenotypeSelections = currentPolyCrossData.map((cross) => {
+    const selector = document.getElementById(`pheno-${cross.gene}`);
+    return selector ? selector.value : "dominant";
+  });
+
+  const result = calculateFinalPhenotypeProbability(
+    phenotypeSelections,
+    currentPolyCrossData,
+    state.inheritance
+  );
+
+  // Apenas atualizar a área de resultado, mantendo os seletores visíveis
+  renderFinalProbabilityResult(result, resultContainer);
 }
 
 /**
@@ -245,49 +298,20 @@ function handleFormSubmit(event) {
 function renderPolyDetail(cross) {
   polyDetailsContainer.classList.remove("hidden");
   polyDetailsTitle.textContent = `Detalhes: ${cross.p1} × ${cross.p2}`;
-  
+
   const gametes1 = getGametes(cross.p1);
   const gametes2 = getGametes(cross.p2);
   const offspring = gametes1.flatMap((g1) =>
     gametes2.map((g2) => combineGametes(g1, g2))
   );
-  
-  renderPunnettSquare(gametes1, gametes2, polyPunnettContainer, state.inheritance);
-  renderProbabilities(offspring, polyProbabilitiesContainer, state.inheritance);
-}
 
-/**
- * Manipula o cálculo da probabilidade de genótipo final
- */
-function handleFinalGenotypeCalculation() {
-  const desiredRaw = desiredGenotypeInput.value;
-  const validation = validateGenotype(desiredRaw, "di");
-  
-  if (!validation.isValid) {
-    finalGenotypeResult.innerHTML = `<p class="text-red-600">Erro: ${validation.message}</p>`;
-    return;
-  }
-
-  const result = calculateFinalGenotypeProbability(desiredRaw, currentPolyCrossData);
-  renderFinalProbabilityResult(result, finalGenotypeResult);
-}
-
-/**
- * Manipula o cálculo da probabilidade de fenótipo final
- */
-function handleFinalPhenotypeCalculation() {
-  const phenotypeSelections = currentPolyCrossData.map((cross) => {
-    const selector = document.getElementById(`pheno-${cross.gene}`);
-    return selector ? selector.value : "dominant";
-  });
-
-  const result = calculateFinalPhenotypeProbability(
-    phenotypeSelections, 
-    currentPolyCrossData, 
+  renderPunnettSquare(
+    gametes1,
+    gametes2,
+    polyPunnettContainer,
     state.inheritance
   );
-  
-  renderFinalProbabilityResult(result, finalPhenotypeResult);
+  renderProbabilities(offspring, polyProbabilitiesContainer, state.inheritance);
 }
 
 /**
@@ -298,12 +322,14 @@ function loadClassicExample() {
   state.crossType = "di";
   parent1Input.value = "AaBb";
   parent2Input.value = "AaBb";
-  
+
   handleInputChange();
 
   // Configurar fenótipos personalizados para o exemplo
   setTimeout(() => {
-    const geneASelector = inheritanceSelectorsContainer.querySelector('.gene-settings[data-gene="a"]');
+    const geneASelector = inheritanceSelectorsContainer.querySelector(
+      '.gene-settings[data-gene="a"]'
+    );
     if (geneASelector) {
       geneASelector.querySelector("select").value = "complete";
       const inputsA = geneASelector.querySelectorAll("input");
@@ -311,7 +337,9 @@ function loadClassicExample() {
       inputsA[2].value = "Verde";
     }
 
-    const geneBSelector = inheritanceSelectorsContainer.querySelector('.gene-settings[data-gene="b"]');
+    const geneBSelector = inheritanceSelectorsContainer.querySelector(
+      '.gene-settings[data-gene="b"]'
+    );
     if (geneBSelector) {
       geneBSelector.querySelector("select").value = "complete";
       const inputsB = geneBSelector.querySelectorAll("input");
@@ -327,41 +355,37 @@ function loadClassicExample() {
 function init() {
   // Verificar se os elementos essenciais existem
   if (!form || !parent1Input || !parent2Input || !calculateBtn) {
-    console.error('❌ Elementos essenciais não encontrados. Verifique se o HTML está correto.');
+    console.error(
+      "❌ Elementos essenciais não encontrados. Verifique se o HTML está correto."
+    );
     return;
   }
 
   // Adicionar event listeners
   parent1Input.addEventListener("input", handleInputChange);
   parent2Input.addEventListener("input", handleInputChange);
-  
+
   crossTypeRadios.forEach((radio) =>
     radio.addEventListener("change", handleCrossTypeChange)
   );
-  
+
   form.addEventListener("submit", handleFormSubmit);
-  
-  if (calculateGenoProbBtn) {
-    calculateGenoProbBtn.addEventListener("click", handleFinalGenotypeCalculation);
-  }
-  
-  if (calculatePhenoProbBtn) {
-    calculatePhenoProbBtn.addEventListener("click", handleFinalPhenotypeCalculation);
-  }
-  
+
   if (exampleBtn) {
     exampleBtn.addEventListener("click", loadClassicExample);
   }
 
   // Inicializar
   handleInputChange();
-  
-  console.log('✅ Calculadora de Genética Mendeliana inicializada com sucesso!');
+
+  console.log(
+    "✅ Calculadora de Genética Mendeliana inicializada com sucesso!"
+  );
 }
 
 // Inicializar quando o DOM estiver pronto
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
 } else {
   init();
 }

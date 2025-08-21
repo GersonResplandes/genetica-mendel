@@ -189,49 +189,14 @@
               id="final-probability-section"
               class="mt-8 pt-6 border-t-2 border-gray-200"
             >
-              <h3 class="text-xl font-semibold mb-4">Probabilidade Final</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 class="font-semibold mb-2">
-                    Probabilidade de um Genótipo
-                  </h4>
-                  <div class="flex items-center gap-2">
-                    <input
-                      type="text"
-                      id="desired-genotype-input"
-                      placeholder="Ex: AabbCc"
-                      class="w-full p-2 border-2 rounded-md"
-                    />
-                    <button
-                      id="calculate-geno-prob-btn"
-                      class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700"
-                    >
-                      Calcular
-                    </button>
-                  </div>
-                  <div
-                    id="final-genotype-result"
-                    class="mt-2 p-2 bg-gray-50 rounded-lg text-sm"
-                    aria-live="polite"
-                  ></div>
-                </div>
-                <div>
-                  <h4 class="font-semibold mb-2">
-                    Probabilidade de um Fenótipo
-                  </h4>
-                  <div id="phenotype-selectors" class="space-y-2"></div>
-                  <button
-                    id="calculate-pheno-prob-btn"
-                    class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 mt-2"
-                  >
-                    Calcular
-                  </button>
-                  <div
-                    id="final-phenotype-result"
-                    class="mt-2 p-2 bg-gray-50 rounded-lg text-sm"
-                    aria-live="polite"
-                  ></div>
-                </div>
+              <h3 class="text-xl font-semibold mb-4">Cálculos Específicos</h3>
+              <div>
+                <h4 class="font-semibold mb-2 text-gray-800">🎨 Fenótipos</h4>
+                <div
+                  id="final-phenotype-result"
+                  class="p-4 bg-gray-50 rounded-lg"
+                  aria-live="polite"
+                ></div>
               </div>
             </div>
           </div>

@@ -30,7 +30,12 @@ export function updateInputFeedback(inputEl, feedbackEl, isValid, message) {
  * @param {HTMLElement} container - Container onde renderizar
  * @param {object} inheritance - Configuração de herança
  */
-export function renderPunnettSquare(gametes1, gametes2, container, inheritance = {}) {
+export function renderPunnettSquare(
+  gametes1,
+  gametes2,
+  container,
+  inheritance = {}
+) {
   let tableHTML =
     '<table class="w-full border-collapse text-center text-sm md:text-base">';
   tableHTML +=
@@ -78,7 +83,7 @@ export function renderProbabilities(offspring, container, inheritance = {}) {
       html += `<li><strong>${genotype}:</strong> ${percentage}% (${count}/${total})</li>`;
     });
   html += "</ul></div>";
-  
+
   html += renderChart(genotypeCounts, total, "Distribuição de Genótipos");
 
   if (Object.keys(phenotypeCounts).length > 1) {
@@ -95,7 +100,7 @@ export function renderProbabilities(offspring, container, inheritance = {}) {
     html += "</ul></div>";
     html += renderChart(phenotypeCounts, total, "Distribuição de Fenótipos");
   }
-  
+
   container.innerHTML = html;
 }
 
@@ -119,7 +124,7 @@ export function renderChart(counts, total, title) {
     "bg-teal-500",
   ];
   let colorIndex = 0;
-  
+
   for (const [label, count] of Object.entries(counts).sort()) {
     const percentage = (count / total) * 100;
     const color = colors[colorIndex % colors.length];
@@ -127,7 +132,9 @@ export function renderChart(counts, total, title) {
       <div class="flex items-center">
         <div class="w-1/3 text-xs truncate pr-2" title="${label}">${label}</div>
         <div class="w-2/3 bg-gray-200 rounded-full h-5">
-          <div class="${color} h-5 rounded-full text-white text-xs text-center leading-5" style="width: ${percentage}%;">${percentage.toFixed(0)}%</div>
+          <div class="${color} h-5 rounded-full text-white text-xs text-center leading-5" style="width: ${percentage}%;">${percentage.toFixed(
+      0
+    )}%</div>
         </div>
       </div>
     `;
@@ -149,8 +156,7 @@ export function getStyleClasses(genotype, inheritance = {}) {
     const type = inheritance[gene]?.type || "complete";
     const isHeterozygous = genotype[0] !== genotype[1];
     const isHomozygousDominant =
-      genotype[0] === genotype[1] &&
-      genotype[0] === genotype[0].toUpperCase();
+      genotype[0] === genotype[1] && genotype[0] === genotype[0].toUpperCase();
 
     if (isHeterozygous) {
       if (type === "incomplete")
@@ -182,7 +188,12 @@ export function getStyleClasses(genotype, inheritance = {}) {
  * @param {HTMLElement} container - Container onde renderizar
  * @param {Function} onChange - Callback para mudanças
  */
-export function renderInheritanceSelectors(genes, inheritance, container, onChange) {
+export function renderInheritanceSelectors(
+  genes,
+  inheritance,
+  container,
+  onChange
+) {
   container.innerHTML = "";
   if (genes.length === 0) return;
 
@@ -198,7 +209,7 @@ export function renderInheritanceSelectors(genes, inheritance, container, onChan
         },
       };
     }
-    
+
     const currentInh = inheritance[gene];
     const div = document.createElement("div");
     div.className = "gene-settings p-2 border rounded-md";
@@ -207,15 +218,29 @@ export function renderInheritanceSelectors(genes, inheritance, container, onChan
       <div class="flex items-center justify-between text-sm">
         <label class="font-semibold mr-2">Gene ${geneLetter}:</label>
         <select data-gene="${gene}" class="p-1 border rounded-md w-full">
-          <option value="complete" ${currentInh.type === "complete" ? "selected" : ""}>Completa</option>
-          <option value="incomplete" ${currentInh.type === "incomplete" ? "selected" : ""}>Incompleta</option>
-          <option value="codominance" ${currentInh.type === "codominance" ? "selected" : ""}>Codominância</option>
+          <option value="complete" ${
+            currentInh.type === "complete" ? "selected" : ""
+          }>Completa</option>
+          <option value="incomplete" ${
+            currentInh.type === "incomplete" ? "selected" : ""
+          }>Incompleta</option>
+          <option value="codominance" ${
+            currentInh.type === "codominance" ? "selected" : ""
+          }>Codominância</option>
         </select>
       </div>
       <div class="phenotype-inputs mt-2 space-y-1 text-xs">
-        <input type="text" value="${currentInh.phenotypes.dominant}" placeholder="Fenótipo Dominante (Ex: Amarela)" class="w-full p-1 border rounded">
-        <input type="text" value="${currentInh.phenotypes.intermediate}" placeholder="Fenótipo Intermediário (Ex: Rosa)" class="w-full p-1 border rounded ${currentInh.type === "complete" ? "hidden" : ""}">
-        <input type="text" value="${currentInh.phenotypes.recessive}" placeholder="Fenótipo Recessivo (Ex: Verde)" class="w-full p-1 border rounded">
+        <input type="text" value="${
+          currentInh.phenotypes.dominant
+        }" placeholder="Fenótipo Dominante (Ex: Amarela)" class="w-full p-1 border rounded">
+        <input type="text" value="${
+          currentInh.phenotypes.intermediate
+        }" placeholder="Fenótipo Intermediário (Ex: Rosa)" class="w-full p-1 border rounded ${
+      currentInh.type === "complete" ? "hidden" : ""
+    }">
+        <input type="text" value="${
+          currentInh.phenotypes.recessive
+        }" placeholder="Fenótipo Recessivo (Ex: Verde)" class="w-full p-1 border rounded">
       </div>
     `;
     container.appendChild(div);
@@ -267,30 +292,44 @@ export function renderPolyCrossList(polyCrossData, container, onCrossClick) {
  * @param {object} inheritance - Configuração de herança
  * @param {HTMLElement} container - Container onde renderizar
  */
-export function renderPhenotypeSelectors(polyCrossData, inheritance, container) {
+export function renderPhenotypeSelectors(
+  polyCrossData,
+  inheritance,
+  container
+) {
   container.innerHTML = "";
   polyCrossData.forEach((cross) => {
     const geneLetter = cross.gene.toUpperCase();
     const inh = inheritance[cross.gene] || {};
     let options;
-    
+
     switch (inh.type) {
       case "incomplete":
       case "codominance":
         options = `
-          <option value="dominant">${inh.phenotypes?.dominant || "Dominante"}</option>
-          <option value="intermediate">${inh.phenotypes?.intermediate || "Intermediário"}</option>
-          <option value="recessive">${inh.phenotypes?.recessive || "Recessivo"}</option>
+          <option value="dominant">${
+            inh.phenotypes?.dominant || "Dominante"
+          }</option>
+          <option value="intermediate">${
+            inh.phenotypes?.intermediate || "Intermediário"
+          }</option>
+          <option value="recessive">${
+            inh.phenotypes?.recessive || "Recessivo"
+          }</option>
         `;
         break;
       default:
         options = `
-          <option value="dominant">${inh.phenotypes?.dominant || "Dominante"}</option>
-          <option value="recessive">${inh.phenotypes?.recessive || "Recessivo"}</option>
+          <option value="dominant">${
+            inh.phenotypes?.dominant || "Dominante"
+          }</option>
+          <option value="recessive">${
+            inh.phenotypes?.recessive || "Recessivo"
+          }</option>
         `;
         break;
     }
-    
+
     const div = document.createElement("div");
     div.className = "flex items-center justify-between text-sm";
     div.innerHTML = `
@@ -308,15 +347,73 @@ export function renderPhenotypeSelectors(polyCrossData, inheritance, container) 
  */
 export function renderFinalProbabilityResult(result, container) {
   if (!result.isValid) {
-    container.innerHTML = `<p class="text-red-600">Erro: ${result.error}</p>`;
+    container.innerHTML = `<p class="text-red-600 font-semibold">❌ Erro: ${result.error}</p>`;
     return;
   }
 
-  let resultHTML = `<p>P(${result.desiredGenotype || 'fenótipo desejado'}) = ${result.fractionSteps.join(" × ")}</p>`;
-  resultHTML += `<p class="font-bold">Resultado: ${result.simplifiedFraction} ≈ ${result.percentage}%</p>`;
+  let resultHTML = `<div class="text-center">`;
+  resultHTML += `<p class="text-blue-800 font-semibold mb-2">📊 Resultado do Cálculo</p>`;
+  resultHTML += `<p class="text-sm text-gray-700 mb-1">P(${
+    result.desiredGenotype || "fenótipo desejado"
+  }) = ${result.fractionSteps.join(" × ")}</p>`;
+  resultHTML += `<p class="text-lg font-bold text-blue-900">${result.simplifiedFraction} ≈ ${result.percentage}%</p>`;
+  resultHTML += `</div>`;
 
   container.innerHTML = resultHTML;
 }
 
+/**
+ * Renderiza automaticamente as probabilidades dos fenótipos possíveis
+ * @param {Array} polyCrossData - Dados dos cruzamentos
+ * @param {object} inheritance - Configuração de herança
+ * @param {HTMLElement} container - Container onde renderizar
+ */
+export function renderCommonPhenotypeProbabilities(
+  polyCrossData,
+  inheritance,
+  container
+) {
+  if (!polyCrossData || polyCrossData.length === 0) return;
+
+  // Adicionar seção para fenótipo personalizado
+  let html = `
+    <div>
+      <h5 class="font-semibold text-gray-700 mb-2">Fenótipo Específico:</h5>
+      <div id="phenotype-selectors" class="space-y-2 mb-2"></div>
+      <button
+        id="calculate-pheno-prob-btn"
+        class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 text-sm mb-4"
+      >
+        Calcular
+      </button>
+      <div
+        id="phenotype-result-area"
+        class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm"
+        aria-live="polite"
+      ></div>
+    </div>
+  `;
+
+  container.innerHTML = html;
+
+  // Renderizar os seletores de fenótipo na nova seção
+  const phenotypeSelectorsContainer = container.querySelector(
+    "#phenotype-selectors"
+  );
+  if (phenotypeSelectorsContainer) {
+    renderPhenotypeSelectors(
+      polyCrossData,
+      inheritance,
+      phenotypeSelectorsContainer
+    );
+  }
+}
+
 // Importações necessárias
-import { combineGametes, calculateProbabilities, getPhenotype } from './genetics.js';
+import {
+  combineGametes,
+  calculateProbabilities,
+  getPhenotype,
+  calculateFinalGenotypeProbability,
+  calculateFinalPhenotypeProbability,
+} from "./genetics.js";

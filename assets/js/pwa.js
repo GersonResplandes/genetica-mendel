@@ -105,7 +105,7 @@ class PWAManager {
       <div id="install-prompt" class="fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-lg shadow-lg z-50 max-w-sm">
         <div class="flex items-center space-x-3">
           <div class="flex-shrink-0">
-            <img src="/assets/logo.svg" alt="Logo" class="w-8 h-8" />
+            <img src="/assets/logo.png" alt="Logo" class="w-8 h-8" />
           </div>
           <div class="flex-1">
             <h3 class="font-semibold text-sm">Instalar App</h3>
@@ -184,8 +184,8 @@ class PWAManager {
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification(title, {
         body: message,
-        icon: '/assets/logo.svg',
-        badge: '/assets/logo.svg'
+        icon: '/assets/logo.png',
+        badge: '/assets/logo.png'
       });
     } else {
       // Fallback para notificação visual
@@ -200,7 +200,7 @@ class PWAManager {
     toast.innerHTML = `
       <div class="flex items-start space-x-3">
         <div class="flex-shrink-0">
-          <img src="/assets/logo.svg" alt="Logo" class="w-6 h-6" />
+          <img src="/assets/logo.png" alt="Logo" class="w-6 h-6" />
         </div>
         <div class="flex-1">
           <h3 class="font-semibold text-sm">${title}</h3>

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="assets/logo.svg" alt="Logo da Calculadora de Genética Mendeliana" width="120" height="120" style="background: white; border-radius: 20px; padding: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);" />
+<img src="assets/logo.png" alt="Logo da Calculadora de Genética Mendeliana" width="120" height="120" style="background: white; border-radius: 20px; padding: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);" />
 
 ![Genetics](https://img.shields.io/badge/Genetics-Mendelian-blue?style=for-the-badge&logo=dna)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript)
@@ -268,7 +268,7 @@ genetica/
 ├── 📄 manifest.json             # Configuração PWA
 ├── 📄 sw.js                     # Service Worker
 ├── 📁 assets/
-│   ├── 🎨 logo.svg              # Logo da aplicação
+│   ├── 🎨 logo.png              # Logo da aplicação
 │   ├── 📁 js/
 │   │   ├── 🧠 app.js            # Aplicação principal
 │   │   ├── 🔍 validation.js     # Validação de dados

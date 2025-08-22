@@ -9,7 +9,7 @@ const urlsToCache = [
   '/assets/js/genetics.js',
   '/assets/js/ui.js',
   '/assets/js/pwa.js',
-  '/assets/logo.svg'
+  '/assets/logo.png'
 ];
 
 // Instalação do Service Worker

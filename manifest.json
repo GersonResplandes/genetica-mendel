@@ -11,38 +11,38 @@
   "lang": "pt-BR",
   "icons": [
     {
-      "src": "assets/logo.svg",
+      "src": "assets/logo.png",
       "sizes": "any",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ],
   "categories": ["education", "science", "utilities"],
 
   "shortcuts": [
-    {
-      "name": "Cruzamento Monohíbrido",
-      "short_name": "Mono",
-      "description": "Abrir calculadora para cruzamento monohíbrido",
-      "url": "/?type=mono",
-      "icons": [
-        {
-          "src": "assets/logo.svg",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Cruzamento Dihíbrido",
-      "short_name": "Di",
-      "description": "Abrir calculadora para cruzamento dihíbrido",
-      "url": "/?type=di",
-      "icons": [
-        {
-          "src": "assets/logo.svg",
-          "sizes": "96x96"
-        }
-      ]
-    }
+         {
+       "name": "Cruzamento Monohíbrido",
+       "short_name": "Mono",
+       "description": "Abrir calculadora para cruzamento monohíbrido",
+       "url": "/?type=mono",
+       "icons": [
+         {
+           "src": "assets/logo.png",
+           "sizes": "96x96"
+         }
+       ]
+     },
+         {
+       "name": "Cruzamento Dihíbrido",
+       "short_name": "Di",
+       "description": "Abrir calculadora para cruzamento dihíbrido",
+       "url": "/?type=di",
+       "icons": [
+         {
+           "src": "assets/logo.png",
+           "sizes": "96x96"
+         }
+       ]
+     }
   ]
 }

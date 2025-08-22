@@ -13,8 +13,8 @@
 **Uma ferramenta educacional interativa para análise de cruzamentos genéticos baseada nas Leis de Mendel**
 
 [![Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=chrome)](https://your-demo-link.com)
-[![Issues](https://img.shields.io/badge/Issues-Welcome-red?style=for-the-badge&logo=github)](https://github.com/your-username/calculadora-genetica-mendel/issues)
-[![Stars](https://img.shields.io/badge/Stars-Welcome-yellow?style=for-the-badge&logo=github)](https://github.com/your-username/calculadora-genetica-mendel/stargazers)
+[![Issues](https://img.shields.io/badge/Issues-Welcome-red?style=for-the-badge&logo=github)](https://github.com/GersonResplanes/calculadora-genetica-mendel/issues)
+[![Stars](https://img.shields.io/badge/Stars-Welcome-yellow?style=for-the-badge&logo=github)](https://github.com/GersonResplanes/calculadora-genetica-mendel/stargazers)
 
 </div>
 
@@ -433,9 +433,9 @@ copies or substantial portions of the Software.
 
 **⭐ Se este projeto foi útil para você, considere dar uma estrela!**
 
-[![GitHub stars](https://img.shields.io/github/stars/your-username/calculadora-genetica-mendel?style=social)](https://github.com/your-username/calculadora-genetica-mendel/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/your-username/calculadora-genetica-mendel?style=social)](https://github.com/your-username/calculadora-genetica-mendel/network)
-[![GitHub issues](https://img.shields.io/github/issues/your-username/calculadora-genetica-mendel)](https://github.com/your-username/calculadora-genetica-mendel/issues)
+[![GitHub stars](https://img.shields.io/github/stars/GersonResplanes/calculadora-genetica-mendel?style=social)](https://github.com/GersonResplanes/calculadora-genetica-mendel/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/GersonResplanes/calculadora-genetica-mendel?style=social)](https://github.com/GersonResplanes/calculadora-genetica-mendel/network)
+[![GitHub issues](https://img.shields.io/github/issues/GersonResplanes/calculadora-genetica-mendel)](https://github.com/GersonResplanes/calculadora-genetica-mendel/issues)
 
 **🧬 Desenvolvido por Gérson Resplandes de Sá Sousa para a comunidade científica**
 

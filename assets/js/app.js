@@ -27,6 +27,9 @@ import {
   renderCommonPhenotypeProbabilities,
 } from "./ui.js";
 
+// Importação do módulo PWA
+import pwaManager from './pwa.js';
+
 // --- Elementos do DOM ---
 const form = document.getElementById("genetics-form");
 const calculateBtn = document.getElementById("calculate-btn");

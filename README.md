@@ -256,6 +256,7 @@ Esta calculadora implementa os princípios fundamentais estabelecidos por **Greg
 - **Responsivo**: Design adaptativo para todos os dispositivos
 - **Acessível**: Conformidade com WCAG 2.1
 - **Performance**: Otimizado para carregamento rápido
+- **PWA**: Progressive Web App com funcionalidades offline
 
 ---
 
@@ -264,13 +265,16 @@ Esta calculadora implementa os princípios fundamentais estabelecidos por **Greg
 ```
 genetica/
 ├── 📄 index.html                 # Página principal
+├── 📄 manifest.json             # Configuração PWA
+├── 📄 sw.js                     # Service Worker
 ├── 📁 assets/
 │   ├── 🎨 logo.svg              # Logo da aplicação
 │   ├── 📁 js/
 │   │   ├── 🧠 app.js            # Aplicação principal
 │   │   ├── 🔍 validation.js     # Validação de dados
 │   │   ├── 🧬 genetics.js       # Lógica genética
-│   │   └── 🎨 ui.js             # Interface do usuário
+│   │   ├── 🎨 ui.js             # Interface do usuário
+│   │   └── 📱 pwa.js            # Gerenciador PWA
 │   └── 🎨 style.css             # Estilos customizados
 ├── 📖 README.md                 # Documentação
 └── 📄 LICENSE                   # Licença MIT
@@ -284,6 +288,34 @@ genetica/
 | **genetics.js**   | Cálculos genéticos | Gametas, probabilidades, fenótipos  |
 | **validation.js** | Validação de dados | Genótipos, normalização             |
 | **ui.js**         | Interface          | Renderização, feedback visual       |
+| **pwa.js**        | Funcionalidades PWA | Instalação, cache, notificações     |
+
+---
+
+## 📱 Progressive Web App (PWA)
+
+### 🎯 Funcionalidades PWA
+
+- ✅ **Instalação**: Pode ser instalada como app nativo
+- ✅ **Offline**: Funciona sem conexão com internet
+- ✅ **Cache Inteligente**: Armazena recursos essenciais
+- ✅ **Notificações**: Sistema de notificações push
+- ✅ **Atualizações**: Atualização automática em background
+- ✅ **Responsivo**: Adaptação perfeita para mobile
+
+### 📲 Como Instalar
+
+1. **Chrome/Edge**: Clique no ícone de instalação na barra de endereços
+2. **Safari**: Adicione à tela inicial através do menu compartilhar
+3. **Firefox**: Clique no ícone de instalação na barra de endereços
+4. **Mobile**: Use o menu do navegador para "Adicionar à tela inicial"
+
+### 🔧 Configuração PWA
+
+- **Manifest**: `manifest.json` com configurações do app
+- **Service Worker**: `sw.js` para cache e funcionalidades offline
+- **Meta Tags**: Configurações específicas para cada plataforma
+- **Ícones**: Múltiplos tamanhos para diferentes dispositivos
 
 ---
 

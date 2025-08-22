@@ -1,0 +1,75 @@
+{
+  "name": "Calculadora de Genética Mendeliana",
+  "short_name": "Genética Mendel",
+  "description": "Ferramenta educacional interativa para análise de cruzamentos genéticos baseada nas Leis de Mendel",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "assets/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["education", "science", "utilities"],
+  "screenshots": [
+    {
+      "src": "assets/screenshot-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Tela principal da calculadora"
+    },
+    {
+      "src": "assets/screenshot-2.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Visualização mobile"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Cruzamento Monohíbrido",
+      "short_name": "Mono",
+      "description": "Abrir calculadora para cruzamento monohíbrido",
+      "url": "/?type=mono",
+      "icons": [
+        {
+          "src": "assets/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Cruzamento Dihíbrido",
+      "short_name": "Di",
+      "description": "Abrir calculadora para cruzamento dihíbrido",
+      "url": "/?type=di",
+      "icons": [
+        {
+          "src": "assets/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

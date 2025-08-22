@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="assets/logo.svg" alt="Logo da Calculadora de Genética Mendeliana" width="120" height="120" />
+<img src="assets/logo.svg" alt="Logo da Calculadora de Genética Mendeliana" width="120" height="120" style="background: white; border-radius: 20px; padding: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);" />
 
 ![Genetics](https://img.shields.io/badge/Genetics-Mendelian-blue?style=for-the-badge&logo=dna)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript)

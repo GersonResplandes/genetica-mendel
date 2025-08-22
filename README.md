@@ -282,12 +282,12 @@ genetica/
 
 ### 🔧 Módulos JavaScript
 
-| Módulo            | Responsabilidade   | Funções Principais                  |
-| ----------------- | ------------------ | ----------------------------------- |
-| **app.js**        | Orquestração geral | Event handlers, estado da aplicação |
-| **genetics.js**   | Cálculos genéticos | Gametas, probabilidades, fenótipos  |
-| **validation.js** | Validação de dados | Genótipos, normalização             |
-| **ui.js**         | Interface          | Renderização, feedback visual       |
+| Módulo            | Responsabilidade    | Funções Principais                  |
+| ----------------- | ------------------- | ----------------------------------- |
+| **app.js**        | Orquestração geral  | Event handlers, estado da aplicação |
+| **genetics.js**   | Cálculos genéticos  | Gametas, probabilidades, fenótipos  |
+| **validation.js** | Validação de dados  | Genótipos, normalização             |
+| **ui.js**         | Interface           | Renderização, feedback visual       |
 | **pwa.js**        | Funcionalidades PWA | Instalação, cache, notificações     |
 
 ---

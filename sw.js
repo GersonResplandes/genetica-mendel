@@ -8,9 +8,8 @@ const urlsToCache = [
   '/assets/js/validation.js',
   '/assets/js/genetics.js',
   '/assets/js/ui.js',
-  '/assets/logo.svg',
-  'https://cdn.tailwindcss.com',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap'
+  '/assets/js/pwa.js',
+  '/assets/logo.svg'
 ];
 
 // Instalação do Service Worker
@@ -20,7 +19,15 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('📦 Cache aberto');
-        return cache.addAll(urlsToCache);
+        // Adiciona recursos um por um para melhor tratamento de erros
+        return Promise.allSettled(
+          urlsToCache.map(url => 
+            cache.add(url).catch(error => {
+              console.warn(`⚠️ Não foi possível cachear: ${url}`, error);
+              return null;
+            })
+          )
+        );
       })
       .catch((error) => {
         console.error('❌ Erro ao instalar cache:', error);
@@ -47,6 +54,25 @@ self.addEventListener('activate', (event) => {
 
 // Interceptação de requisições
 self.addEventListener('fetch', (event) => {
+  // Estratégia diferente para recursos externos
+  if (event.request.url.includes('cdn.tailwindcss.com') || 
+      event.request.url.includes('fonts.googleapis.com')) {
+    // Para recursos externos, usa estratégia "Network First"
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // Se a rede falhar, não faz nada (deixa o navegador lidar)
+          return response;
+        })
+        .catch(() => {
+          // Fallback silencioso para recursos externos
+          return new Response('', { status: 404 });
+        })
+    );
+    return;
+  }
+
+  // Para recursos locais, usa estratégia "Cache First"
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
@@ -59,7 +85,7 @@ self.addEventListener('fetch', (event) => {
         return fetch(event.request)
           .then((response) => {
             // Verifica se a resposta é válida
-            if (!response || response.status !== 200 || response.type !== 'basic') {
+            if (!response || response.status !== 200) {
               return response;
             }
 
@@ -78,6 +104,7 @@ self.addEventListener('fetch', (event) => {
             if (event.request.destination === 'document') {
               return caches.match('/index.html');
             }
+            return new Response('', { status: 404 });
           });
       })
   );

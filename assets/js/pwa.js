@@ -40,12 +40,17 @@ class PWAManager {
   // Configura o prompt de instalação
   setupInstallPrompt() {
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
+      console.log('📱 Prompt de instalação disponível');
+      // Não previne o comportamento padrão imediatamente
       this.deferredPrompt = e;
-      this.showInstallButton();
+      // Aguarda um pouco antes de mostrar o botão
+      setTimeout(() => {
+        this.showInstallButton();
+      }, 2000);
     });
 
     window.addEventListener('appinstalled', () => {
+      console.log('✅ App instalado com sucesso');
       this.isInstalled = true;
       this.hideInstallButton();
       this.showInstallationSuccess();
@@ -134,13 +139,20 @@ class PWAManager {
   async installApp() {
     if (!this.deferredPrompt) return;
 
-    this.deferredPrompt.prompt();
-    const { outcome } = await this.deferredPrompt.userChoice;
+    // Previne o comportamento padrão apenas quando o usuário clica
+    this.deferredPrompt.preventDefault();
     
-    if (outcome === 'accepted') {
-      console.log('✅ Usuário aceitou a instalação');
-    } else {
-      console.log('❌ Usuário recusou a instalação');
+    try {
+      this.deferredPrompt.prompt();
+      const { outcome } = await this.deferredPrompt.userChoice;
+      
+      if (outcome === 'accepted') {
+        console.log('✅ Usuário aceitou a instalação');
+      } else {
+        console.log('❌ Usuário recusou a instalação');
+      }
+    } catch (error) {
+      console.error('❌ Erro durante a instalação:', error);
     }
 
     this.deferredPrompt = null;

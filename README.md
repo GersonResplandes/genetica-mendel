@@ -500,7 +500,7 @@ copies or substantial portions of the Software.
 
 - **🌐 Website**: [genetica-mendel.vercel.app](https://genetica-mendel.vercel.app)
 - **📧 Email**: sagerson@acad.ifma.edu.br
-- **💼 LinkedIn**: [Gérson Resplandes](www.linkedin.com/in/gerson-resplandes-b24b1437a)
+- **💼 LinkedIn**: [Gérson Resplandes](https://www.linkedin.com/in/gerson-resplandes-b24b1437a/)
 - **🐙 GitHub**: [@GersonResplandes](https://github.com/GersonResplandes)
 - **📱 WhatsApp**: +55 (99) 984700510
 

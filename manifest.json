@@ -15,37 +15,10 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
-    },
-    {
-      "src": "assets/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "assets/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
     }
   ],
   "categories": ["education", "science", "utilities"],
-  "screenshots": [
-    {
-      "src": "assets/screenshot-1.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Tela principal da calculadora"
-    },
-    {
-      "src": "assets/screenshot-2.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Visualização mobile"
-    }
-  ],
+
   "shortcuts": [
     {
       "name": "Cruzamento Monohíbrido",

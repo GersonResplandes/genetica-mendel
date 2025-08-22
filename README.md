@@ -2,6 +2,9 @@
 
 <div align="center">
 
+<img src="assets/logo.svg" alt="Logo da Calculadora de Genética Mendeliana" width="120" height="120" />
+
+
 ![Genetics](https://img.shields.io/badge/Genetics-Mendelian-blue?style=for-the-badge&logo=dna)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript)
 ![HTML5](https://img.shields.io/badge/HTML5-Standard-orange?style=for-the-badge&logo=html5)
@@ -263,6 +266,7 @@ Esta calculadora implementa os princípios fundamentais estabelecidos por **Greg
 genetica/
 ├── 📄 index.html                 # Página principal
 ├── 📁 assets/
+│   ├── 🎨 logo.svg              # Logo da aplicação
 │   ├── 📁 js/
 │   │   ├── 🧠 app.js            # Aplicação principal
 │   │   ├── 🔍 validation.js     # Validação de dados

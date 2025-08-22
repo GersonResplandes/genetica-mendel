@@ -12,9 +12,9 @@
 
 **Uma ferramenta educacional interativa para análise de cruzamentos genéticos baseada nas Leis de Mendel**
 
-[![Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=chrome)](https://your-demo-link.com)
-[![Issues](https://img.shields.io/badge/Issues-Welcome-red?style=for-the-badge&logo=github)](https://github.com/GersonResplanes/calculadora-genetica-mendel/issues)
-[![Stars](https://img.shields.io/badge/Stars-Welcome-yellow?style=for-the-badge&logo=github)](https://github.com/GersonResplanes/calculadora-genetica-mendel/stargazers)
+[![Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=chrome)](https://genetica-mendel.vercel.app)
+[![Issues](https://img.shields.io/badge/Issues-Welcome-red?style=for-the-badge&logo=github)](https://github.com/GersonResplandes/genetica-mendel/issues)
+[![Stars](https://img.shields.io/badge/Stars-Welcome-yellow?style=for-the-badge&logo=github)](https://github.com/GersonResplandes/genetica-mendel/stargazers)
 
 </div>
 
@@ -33,6 +33,7 @@
 - [🎨 Interface e Design](#-interface-e-design)
 - [📈 Roadmap](#-roadmap)
 - [🤝 Contribuição](#-contribuição)
+- [❓ FAQ](#-faq-perguntas-frequentes)
 - [📄 Licença](#-licença)
 
 ---
@@ -91,6 +92,17 @@ A **Calculadora de Genética Mendeliana** é uma ferramenta web interativa desen
 - **📱 Responsividade**: Otimizado para todos os dispositivos
 - **♿ Acessibilidade**: Navegação por teclado e screen readers
 - **🌐 Compatibilidade**: Todos os navegadores modernos
+
+### 💻 Requisitos do Sistema
+
+- **🌐 Navegadores Suportados**:
+  - Chrome 80+
+  - Firefox 75+
+  - Safari 13+
+  - Edge 80+
+- **📱 Dispositivos**: Desktop, Tablet, Mobile
+- **💾 Armazenamento**: 5MB (cache PWA)
+- **🌍 Conexão**: Funciona offline após primeiro acesso
 
 ### 🔒 Validação e Segurança
 
@@ -394,7 +406,52 @@ Contribuições são bem-vindas! Este projeto é mantido pela comunidade cientí
 
 ### 🐛 Reportando Bugs
 
-Use o [sistema de issues](https://github.com/GersonResplandes/calculadora-genetica-mendel/issues) para reportar bugs ou solicitar funcionalidades.
+Use o [sistema de issues](https://github.com/GersonResplandes/genetica-mendel/issues) para reportar bugs ou solicitar funcionalidades.
+
+---
+
+## ❓ FAQ (Perguntas Frequentes)
+
+### 🤔 **Como usar a calculadora?**
+
+1. Acesse [genetica-mendel.vercel.app](https://genetica-mendel.vercel.app)
+2. Selecione o tipo de cruzamento (Mono/Dihíbrido/Poli-híbrido)
+3. Digite os genótipos dos progenitores
+4. Configure os fenótipos se necessário
+5. Clique em "Calcular" para ver os resultados
+
+### 📱 **Posso usar no celular?**
+
+Sim! A aplicação é totalmente responsiva e funciona como PWA. Você pode:
+
+- Acessar pelo navegador mobile
+- Instalar como app nativo
+- Usar offline após o primeiro acesso
+
+### 🧬 **Quais tipos de herança são suportados?**
+
+- **Dominância Completa**: Alelo dominante mascara recessivo
+- **Dominância Incompleta**: Fenótipo intermediário
+- **Codominância**: Ambos os alelos se expressam
+
+### 🔧 **Encontrei um erro. O que fazer?**
+
+1. Verifique se os genótipos estão no formato correto (ex: AaBb)
+2. Certifique-se de que ambos os progenitores têm o mesmo número de genes
+3. Se o problema persistir, [abra uma issue](https://github.com/GersonResplandes/genetica-mendel/issues)
+
+### 📚 **Posso usar em sala de aula?**
+
+Absolutamente! Esta ferramenta foi desenvolvida especificamente para:
+
+- Professores de Biologia
+- Estudantes do Ensino Médio e Superior
+- Aulas práticas de genética
+- Exercícios e trabalhos acadêmicos
+
+### 🌐 **Funciona offline?**
+
+Sim! Após o primeiro acesso, a aplicação funciona completamente offline graças à tecnologia PWA.
 
 ---
 
@@ -405,7 +462,7 @@ Este projeto está licenciado sob a **Licença MIT** - veja o arquivo [LICENSE](
 ```
 MIT License
 
-Copyright (c) 2024 Calculadora de Genética Mendeliana
+Copyright (c) 2025 Calculadora de Genética Mendeliana
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -433,10 +490,26 @@ copies or substantial portions of the Software.
 
 **⭐ Se este projeto foi útil para você, considere dar uma estrela!**
 
-[![GitHub stars](https://img.shields.io/github/stars/GersonResplanes/calculadora-genetica-mendel?style=social)](https://github.com/GersonResplanes/calculadora-genetica-mendel/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/GersonResplanes/calculadora-genetica-mendel?style=social)](https://github.com/GersonResplanes/calculadora-genetica-mendel/network)
-[![GitHub issues](https://img.shields.io/github/issues/GersonResplanes/calculadora-genetica-mendel)](https://github.com/GersonResplanes/calculadora-genetica-mendel/issues)
+[![GitHub stars](https://img.shields.io/github/stars/GersonResplandes/genetica-mendel?style=social)](https://github.com/GersonResplandes/genetica-mendel/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/GersonResplandes/genetica-mendel?style=social)](https://github.com/GersonResplandes/genetica-mendel/network)
+[![GitHub issues](https://img.shields.io/github/issues/GersonResplandes/genetica-mendel)](https://github.com/GersonResplandes/genetica-mendel/issues)
 
 **🧬 Desenvolvido por Gérson Resplandes de Sá Sousa para a comunidade científica**
+
+### 📞 Contato e Redes Sociais
+
+- **🌐 Website**: [genetica-mendel.vercel.app](https://genetica-mendel.vercel.app)
+- **📧 Email**: sagerson@acad.ifma.edu.br
+- **💼 LinkedIn**: [Gérson Resplandes](https://www.linkedin.com/in/gerson-resplandes/)
+- **🐙 GitHub**: [@GersonResplandes](https://github.com/GersonResplandes)
+- **📱 WhatsApp**: +55 (99) 984700510
+
+### 📊 Status do Projeto
+
+- **🟢 Status**: Ativo e em desenvolvimento
+- **📅 Última Atualização**: Janeiro 2025
+- **🏷️ Versão**: 1.0.0
+- **🌐 Deploy**: Vercel
+- **📱 PWA**: Funcional
 
 </div>
